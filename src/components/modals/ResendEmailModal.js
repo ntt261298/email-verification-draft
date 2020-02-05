@@ -32,7 +32,7 @@ const ResendEmailModal = (props) => {
 
     return (
       <Modal isOpen={isOpen}>
-        <ModalHeader>Verify your email</ModalHeader>
+        <ModalHeader toggle={toggle}>Verify your email</ModalHeader>
         <ModalBody>
             <div style={{ textAlign: 'center' }}>
                 <div className="spinner-border text-primary" role="status">
