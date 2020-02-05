@@ -9,6 +9,8 @@ const EmailVerificationSuccessModal = (props) => {
     const handleContinue = (e) => {
         e.preventDefault();
         saveItem('token', loadItem('temp_token'));
+        saveItem('isUserVerified', 1);
+        props.setLoggedIn();
         hideModal();
         props.history.push('/home');
     }

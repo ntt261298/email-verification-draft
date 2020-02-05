@@ -9,16 +9,16 @@ const EmailVerificationFailModal = (props) => {
 
     const handleContinue = (e) => {
         e.preventDefault();
-        saveItem('token', loadItem('temp_token'));
+        saveItem('token', '');
         hideModal();
-        props.history.push('/home');
+        props.history.push('/');
     }
 
     return (
       <Modal isOpen={isOpen}>
         <ModalHeader>Invalid token</ModalHeader>
         <ModalBody>
-            <p>Your verification token associate with <b>{email}</b> is invalid.</p>
+            <p>Your verification token associate with <b>{email}</b> is invalid or expired.</p>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={(e) =>  handleContinue(e)}>Ok, Gotit!</Button>
