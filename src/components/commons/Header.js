@@ -30,6 +30,9 @@ function Header(props) {
                 loggedIn && <button type="button" className="btn-logout" onClick={() => handleLogout()}>Logout</button>
 
             }
+            {/* {
+                !loggedIn && <button type="button" className="btn-signup" onClick={() => toggleLogin()}>Login</button>
+            } */}
             {
                 !loggedIn && <button type="button" className="btn-signup" onClick={() => toggleSignUp()}>Signup</button>
             }

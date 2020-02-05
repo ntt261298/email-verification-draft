@@ -1,40 +1,39 @@
 import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
 import { saveItem } from '../../utils/localStorage';
+import { errMessage, successMessage } from '../../utils/message';
 import { API_URL, PORTAL_URL } from '../../config';
 
 const SignUp = (props) => {
   const { toggle, isOpen, showResendModal } = props;
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     const response = await fetch(`${API_URL}/signup/email`, {
-        method: 'POST',
-        body: JSON.stringify({ username, password }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'post',
+        body: JSON.stringify({ email, password }),
     });
-    const data = await response.json();
-    // const data = {
-    //   message: 'success',
-    //   access_token: 'access_token',
-    // }
 
-    if (data['message'] === 'error') {
-      setError('Sign up failed');
+    if (response.status !== 200) {
+      const data = await response.json();
+      errMessage(data['message']);
       return;
     }
-    if (data['message'] === 'success') {
-      saveItem('isUserVerified', 0);
-      saveItem('temp_token', data['access_token']);
-      saveItem('email', username);
-      toggle();
-      showResendModal();
-      return;
-    } 
-    saveItem('token', data['access_token']);
-    window.location.replace(`${PORTAL_URL}/home`);
+
+    const data = await response.json();
+    successMessage(data['message']);
+    saveItem('isUserVerified', 0);
+    saveItem('temp_token', data['access_token']);
+    saveItem('email', email);
+    toggle();
+    showResendModal();
+    // window.location.replace(`${PORTAL_URL}/home`);
  }
 
   return (
@@ -44,7 +43,7 @@ const SignUp = (props) => {
         <Form>
           <FormGroup>
             <Label for="exampleEmail">Email</Label>
-            <Input type="email" name="email" id="exampleEmail" placeholder="Enter your emailr" onChange={(e) => setUsername(e.target.value)}/>
+            <Input type="email" name="email" id="exampleEmail" placeholder="Enter your emailr" onChange={(e) => setEmail(e.target.value)}/>
           </FormGroup>
           <FormGroup>
             <Label for="examplePassword">Password</Label>

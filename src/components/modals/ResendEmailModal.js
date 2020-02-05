@@ -20,14 +20,14 @@ const ResendEmailModal = (props) => {
                Authorization: `Bearer ${loadItem('temp_token')}`,
            },
         });
-        const data = await response.json();
-        // const data = {
-        //     message: 'success',
-        // }
-        setDisabled(false);
-        if (data['message'] === 'success') {
-            successMessage('Resent Successfully');
-        }
+
+        if (response.status === 200) {
+            const data = await response.json();
+            successMessage(data['message']);
+            setDisabled(false);
+            return;
+          }
+
     }
 
     return (

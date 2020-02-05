@@ -18,25 +18,21 @@ const EmailVerification = (props) => {
           props.history.push('/home');
           return;   
         }
-        const response = fetch(`${API_URL}/verify/email`, {
-            method: 'PUT',
+        fetch(`${API_URL}/verify/email`, {
+            method: 'POST',
             headers: {
              Authorization: `Bearer ${loadItem('temp_token')}`,
+            'Content-Type': 'application/json',
             },
             body: JSON.stringify({ code: token }),
-        }).then(res => response.json())
-        .then(data => {
-        // const data = {
-        //     message: 'success',
-        // };
-        if (data['message'] === 'success') {
-            setVetifyStatus('success');
-            saveItem('isUserVerified', true);
-        };
-        if (data['message'] === 'error') {
+        }).then(res => {
+            if (res.status === 200) {
+                setVetifyStatus('success');
+                saveItem('isUserVerified', true);
+                return;
+            }
             setVetifyStatus('fail');
-        }
-        });
+        })
     }, [])
 
     return (
